@@ -7,7 +7,7 @@ const input = document.querySelector('.input');
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   const value = input.value;
-  validateForm.validate(value);
+  validateForm.init(value);
 });
 
 

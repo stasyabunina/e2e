@@ -6,36 +6,13 @@ export default class ValidationForm {
     this.card = null;
   }
 
-  validate(value) {
+  init(value) {
     this.checkLuhn(value);
 
-    if (this.checkLuhn(value) === true) {
-      this.checkedLuhn = true;
-    }
+    this.getCheckedLuhn(value);
 
     if (/^\d+$/.test(value) && this.checkedLuhn === true) {
-      if (/(^4)/.test(value) && [13, 16].includes(value.length)) {
-        this.checked = true;
-        this.card = 'visa';
-      } else if (/(^5[1-5]|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)/.test(value) && value.length === 16) {
-        this.checked = true;
-        this.card = 'mastercard';
-      } else if (/(^3[47])/.test(value) && value.length === 15) {
-        this.checked = true;
-        this.card = 'amex';
-      } else if (/(^220(0|4))/.test(value) && [16, 17, 18, 19].includes(value.length)) {
-        this.checked = true;
-        this.card = 'mir';
-      } else if ((/^(?:2131|1800)/.test(value) && value.length === 15) || (/(^35)/.test(value) && value.length === 16)) {
-        this.checked = true;
-        this.card = 'jcb';
-      } else if (/(^6(?:011|5))/.test(value) && value.length === 16) {
-        this.checked = true;
-        this.card = 'discover';
-      } else if (/^3(?:0[0-5]|[68])/.test(value) && value.length === 14) {
-        this.checked = true;
-        this.card = 'diners';
-      }
+      this.validate(value);
     }
 
     const popup = document.querySelector('.popup');
@@ -78,6 +55,31 @@ export default class ValidationForm {
     this.checkedLuhn = false;
   }
 
+  validate(value) {
+    if (/(^4)/.test(value) && [13, 16].includes(value.length)) {
+      this.checked = true;
+      this.card = 'visa';
+    } else if (/(^5[1-5]|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)/.test(value) && value.length === 16) {
+      this.checked = true;
+      this.card = 'mastercard';
+    } else if (/(^3[47])/.test(value) && value.length === 15) {
+      this.checked = true;
+      this.card = 'amex';
+    } else if (/(^220(0|4))/.test(value) && [16, 17, 18, 19].includes(value.length)) {
+      this.checked = true;
+      this.card = 'mir';
+    } else if ((/^(?:2131|1800)/.test(value) && value.length === 15) || (/(^35)/.test(value) && value.length === 16)) {
+      this.checked = true;
+      this.card = 'jcb';
+    } else if (/(^6(?:011|5))/.test(value) && value.length === 16) {
+      this.checked = true;
+      this.card = 'discover';
+    } else if (/^3(?:0[0-5]|[68])/.test(value) && value.length === 14) {
+      this.checked = true;
+      this.card = 'diners';
+    }
+  }
+
   disable() {
     const cards = Array.from(document.querySelectorAll('.card'));
     const unsuitableCards = cards.filter((card) => card.classList[1] !== this.card);
@@ -110,5 +112,11 @@ export default class ValidationForm {
     }
 
     return (sum !== 0) && (sum % 10 === 0);
+  }
+
+  getCheckedLuhn(value) {
+    if (this.checkLuhn(value) === true) {
+      this.checkedLuhn = true;
+    }
   }
 }
